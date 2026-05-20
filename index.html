@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MVC — Practice Question Bank</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap');
+
+:root {
+  --bg:        #f7f5f0;
+  --bg2:       #ffffff;
+  --bg3:       #efefea;
+  --border:    #ddd9d0;
+  --accent:    #c0392b;
+  --accent2:   #2980b9;
+  --green:     #27ae60;
+  --amber:     #e67e22;
+  --text:      #1a1a1a;
+  --muted:     #6b6860;
+  --tag-easy:  #d5f5e3;
+  --tag-easy-t:#1e8449;
+  --tag-med:   #fdebd0;
+  --tag-med-t: #a04000;
+  --tag-hard:  #fadbd8;
+  --tag-hard-t:#922b21;
+  --shadow:    0 2px 8px rgba(0,0,0,0.07);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14.5px;
+  line-height: 1.8;
+}
+
+/* ── NAV ── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--bg2);
+  border-bottom: 2px solid var(--border);
+  padding: 10px 28px;
+  display: flex; gap: 6px; flex-wrap: wrap; align-items: center;
+  box-shadow: var(--shadow);
+}
+nav .nav-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 1.5px;
+  margin-right: 6px;
+}
+nav a {
+  text-decoration: none; color: var(--muted);
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  padding: 3px 10px; border-radius: 4px;
+  border: 1px solid var(--border);
+  background: var(--bg3);
+  transition: all .18s;
+}
+nav a:hover { color: var(--accent); border-color: var(--accent); background: #fdedec; }
+
+/* ── HEADER ── */
+header {
+  background: var(--bg2);
+  border-bottom: 3px solid var(--accent);
+  padding: 52px 40px 40px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+header::before {
+  content: '∫∇∂';
+  position: absolute; top: 10px; right: 30px;
+  font-size: 5rem; color: rgba(192,57,43,0.06);
+  font-family: 'Lora', serif; pointer-events: none;
+}
+header h1 {
+  font-family: 'Lora', serif;
+  font-size: 2.4rem; font-weight: 700;
+  color: var(--accent); letter-spacing: -0.5px;
+  margin-bottom: 8px;
+}
+header .subtitle {
+  color: var(--muted); font-size: 13.5px; margin-bottom: 18px;
+}
+.badge-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.badge {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 20px; padding: 4px 14px;
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted);
+}
+.badge strong { color: var(--accent); }
+
+/* ── MAIN ── */
+main { max-width: 980px; margin: 0 auto; padding: 36px 24px 80px; }
+
+/* ── CHAPTER ── */
+.chapter { margin-bottom: 44px; border-radius: 10px; overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+
+.chapter-header {
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  padding: 15px 22px;
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+}
+.ch-num {
+  background: var(--accent); color: #fff;
+  font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600;
+  padding: 4px 12px; border-radius: 5px; white-space: nowrap;
+}
+.ch-title {
+  font-family: 'Lora', serif; font-size: 1.1rem; font-weight: 600; color: var(--text);
+  flex: 1;
+}
+.clo-tag {
+  background: #eaf4fb; border: 1px solid #aed6f1;
+  color: var(--accent2);
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  padding: 3px 10px; border-radius: 4px; white-space: nowrap;
+}
+
+/* ── QUESTIONS ── */
+.questions { background: var(--bg2); padding: 18px 22px; display: flex; flex-direction: column; gap: 12px; }
+
+.q {
+  background: var(--bg);
+  border-left: 3px solid var(--border);
+  border-radius: 0 6px 6px 0;
+  padding: 13px 16px;
+  transition: border-color .18s, background .18s;
+}
+.q:hover { border-left-color: var(--accent); background: #fdfaf8; }
+
+.q-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+.q-num {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--accent); font-weight: 600;
+}
+.diff {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  padding: 2px 8px; border-radius: 3px;
+}
+.easy { background: var(--tag-easy); color: var(--tag-easy-t); }
+.med  { background: var(--tag-med);  color: var(--tag-med-t); }
+.hard { background: var(--tag-hard); color: var(--tag-hard-t); }
+
+.q-text { color: var(--text); font-size: 14px; }
+.math {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12.5px; color: #1a5276;
+  background: #eaf4fb; padding: 1px 5px; border-radius: 3px;
+}
+
+/* ── SECTION DIVIDER ── */
+.sec-divider {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px;
+  padding: 6px 22px; background: var(--bg3);
+  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+}
+
+/* ── REFERENCE BOX ── */
+.ref-box {
+  background: #fef9ec; border: 1px solid #f9d66b;
+  border-radius: 6px; padding: 10px 16px; margin-bottom: 12px;
+  font-size: 13px; color: #7d6608;
+  font-family: 'DM Sans', sans-serif;
+}
+.ref-box strong { color: #5d4e08; }
+
+footer {
+  text-align: center; color: var(--muted);
+  font-size: 12px; padding: 24px;
+  border-top: 1px solid var(--border); background: var(--bg2);
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-label">Sections →</span>
+  <a href="#s101">10.1</a><a href="#s102">10.2</a><a href="#s103">10.3</a>
+  <a href="#s104">10.4</a><a href="#s132">13.2</a><a href="#s141">14.1</a>
+  <a href="#s142">14.2</a><a href="#s143">14.3</a><a href="#s144">14.4</a>
+  <a href="#s145">14.5</a><a href="#s146">14.6</a><a href="#s147">14.7</a>
+  <a href="#s148">14.8</a><a href="#s151">15.1</a><a href="#s152">15.2</a>
+  <a href="#s156">15.6</a><a href="#s162">16.2</a><a href="#s164">16.4</a>
+  <a href="#s165">16.5</a>
+</nav>
+
+<header>
+  <h1>MVC — Practice Question Bank</h1>
+  <p class="subtitle">James Stewart · Multivariable Calculus, 9th Ed. (Metric) &nbsp;·&nbsp; NUCES Karachi · Final Exam Prep</p>
+  <div class="badge-row">
+    <span class="badge"><strong>19</strong> Topics</span>
+    <span class="badge">CLO 1 · 2 · 3 · 4</span>
+    <span class="badge"><strong>Easy / Med / Hard</strong></span>
+    <span class="badge">Syllabus-Aligned</span>
+  </div>
+</header>
+
+<main>
+
+<!-- ══════════════════════════════════════════════════
+     §10.1  Parametric Equations and Curves
+     Syllabus: Q 1–34
+══════════════════════════════════════════════════ -->
+<div class="chapter" id="s101">
+  <div class="chapter-header">
+    <span class="ch-num">§ 10.1</span>
+    <span class="ch-title">Parametric Equations and Curves</span>
+    <span class="clo-tag">CLO 2 · 10%</span>
+  </div>
+  <div class="questions">
+    <div class="ref-box"><strong>Syllabus range:</strong> Exercises 1–34</div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q1</span><span class="diff easy">Easy</span></div>
+    <div class="q-text">Sketch the curve given by <span class="math">x = 2t − 1,&nbsp; y = t² − t,&nbsp; −2 ≤ t ≤ 2</span> by (a) making a table of values, (b) eliminating the parameter to find the Cartesian equation, and (c) indicating the direction of motion.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q2</span><span class="diff easy">Easy</span></div>
+    <div class="q-text">The curve <span class="math">x = cos²t,&nbsp; y = sin²t,&nbsp; 0 ≤ t ≤ 2π</span> — eliminate the parameter, identify the Cartesian curve, and state which portion of it is traced out.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q3</span><span class="diff easy">Easy</span></div>
+    <div class="q-text">Write parametric equations for the line segment joining <span class="math">(3, −2)</span> to <span class="math">(−1, 4)</span> with <span class="math">0 ≤ t ≤ 1</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q4</span><span class="diff med">Medium</span></div>
+    <div class="q-text">The equations <span class="math">x = a cosθ + h,&nbsp; y = b sinθ + k</span> represent an ellipse. Identify center, semi-axes, and the direction of traversal as <span class="math">θ</span> increases from <span class="math">0</span> to <span class="math">2π</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q5</span><span class="diff hard">Hard</span></div>
+    <div class="q-text">The cycloid is <span class="math">x = r(θ − sinθ),&nbsp; y = r(1 − cosθ)</span>. For <span class="math">r = 1</span>: (a) find all values of <span class="math">θ</span> where the curve has a cusp, (b) sketch one complete arch <span class="math">0 ≤ θ ≤ 2π</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q6</span><span class="diff hard">Hard</span></div>
+    <div class="q-text">Two particles move as <span class="math">P₁: x = t²,&nbsp; y = t³</span> and <span class="math">P₂: x = t + 2,&nbsp; y = t² − 1</span>. (a) Do their paths intersect? (b) Do the particles ever collide (same place at same time)? Justify fully.</div></div>
+  </div>
+</div>
+
+<!-- §10.2 -->
+<div class="chapter" id="s102">
+  <div class="chapter-header">
+    <span class="ch-num">§ 10.2</span>
+    <span class="ch-title">Calculus with Parametric Curves</span>
+    <span class="clo-tag">CLO 2 · 10%</span>
+  </div>
+  <div class="questions">
+    <div class="ref-box"><strong>Syllabus range:</strong> Exercises 1–12, 15–20, 35–40</div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q1</span><span class="diff easy">Easy</span></div>
+    <div class="q-text">For <span class="math">x = t³ − 3t,&nbsp; y = t² + 2t</span>, find <span class="math">dy/dx</span> and all points where the tangent is (a) horizontal, (b) vertical.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q2</span><span class="diff med">Medium</span></div>
+    <div class="q-text">Find the tangent line to <span class="math">x = e^t sin πt,&nbsp; y = e^t cos πt</span> at <span class="math">t = 0</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q3</span><span class="diff med">Medium</span></div>
+    <div class="q-text">For the cycloid <span class="math">x = t − sin t,&nbsp; y = 1 − cos t</span>, find <span class="math">d²y/dx²</span> and determine where the curve is concave up.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q4</span><span class="diff med">Medium</span></div>
+    <div class="q-text">Find the arc length of <span class="math">x = 3t²,&nbsp; y = 2t³</span> from <span class="math">t = 0</span> to <span class="math">t = 1</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q5</span><span class="diff hard">Hard</span></div>
+    <div class="q-text">Find the area under one arch of the cycloid <span class="math">x = r(θ − sinθ),&nbsp; y = r(1 − cosθ)</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q6</span><span class="diff hard">Hard</span></div>
+    <div class="q-text">Find the total arc length of the curve <span class="math">x = cos t,&nbsp; y = sin³t,&nbsp; 0 ≤ t ≤ 2π</span>.</div></div>
+  </div>
+</div>
+
+<!-- §10.3 -->
+<div class="chapter" id="s103">
+  <div class="chapter-header">
+    <span class="ch-num">§ 10.3</span>
+    <span class="ch-title">Polar Coordinates and Polar Curves</span>
+    <span class="clo-tag">CLO 2 · 10%</span>
+  </div>
+  <div class="questions">
+    <div class="ref-box"><strong>Syllabus range:</strong> Exercises 1–50</div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q1</span><span class="diff easy">Easy</span></div>
+    <div class="q-text">Convert polar point <span class="math">(4, 5π/6)</span> to Cartesian coordinates.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q2</span><span class="diff easy">Easy</span></div>
+    <div class="q-text">Convert <span class="math">(−3, 3)</span> to polar form <span class="math">(r, θ)</span> with <span class="math">r > 0,&nbsp; 0 ≤ θ < 2π</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q3</span><span class="diff easy">Easy</span></div>
+    <div class="q-text">Sketch and identify <span class="math">r = 2cosθ</span>. Find its Cartesian equation.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q4</span><span class="diff med">Medium</span></div>
+    <div class="q-text">Sketch the cardioid <span class="math">r = 1 + sinθ</span>. Find all points where it passes through the origin.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q5</span><span class="diff med">Medium</span></div>
+    <div class="q-text">Find all intersection points of <span class="math">r = sinθ</span> and <span class="math">r = cosθ</span>. Sketch both curves.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q6</span><span class="diff med">Medium</span></div>
+    <div class="q-text">Sketch the four-leaf rose <span class="math">r = cos 2θ</span> and state the values of <span class="math">θ</span> at the petal tips.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q7</span><span class="diff hard">Hard</span></div>
+    <div class="q-text">Identify the conic <span class="math">r = 3/(2 − cosθ)</span>: state the type, eccentricity, and sketch the curve.</div></div>
+  </div>
+</div>
+
+<!-- §10.4 -->
+<div class="chapter" id="s104">
+  <div class="chapter-header">
+    <span class="ch-num">§ 10.4</span>
+    <span class="ch-title">Calculus in Polar Coordinates</span>
+    <span class="clo-tag">CLO 2 · 10%</span>
+  </div>
+  <div class="questions">
+    <div class="ref-box"><strong>Syllabus range:</strong> Exercises 1–44</div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q1</span><span class="diff med">Medium</span></div>
+    <div class="q-text">Find the area enclosed by the cardioid <span class="math">r = 1 + cosθ</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q2</span><span class="diff med">Medium</span></div>
+    <div class="q-text">Find the slope of the tangent to <span class="math">r = 2sinθ</span> at <span class="math">θ = π/6</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q3</span><span class="diff med">Medium</span></div>
+    <div class="q-text">Find the area of one petal of the rose <span class="math">r = 4cos 3θ</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q4</span><span class="diff med">Medium</span></div>
+    <div class="q-text">Find the arc length of <span class="math">r = e^θ</span> for <span class="math">0 ≤ θ ≤ 2π</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q5</span><span class="diff hard">Hard</span></div>
+    <div class="q-text">Find the area inside <span class="math">r = 3sinθ</span> but outside <span class="math">r = 1 + sinθ</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q6</span><span class="diff hard">Hard</span></div>
+    <div class="q-text">Find the area of the region common to the circles <span class="math">r = 2</span> and <span class="math">r = 4cosθ</span>.</div></div>
+  </div>
+</div>
+
+<!-- §13.2 -->
+<div class="chapter" id="s132">
+  <div class="chapter-header">
+    <span class="ch-num">§ 13.2</span>
+    <span class="ch-title">Derivatives and Integrals of Vector Functions</span>
+    <span class="clo-tag">CLO 2 · 20%</span>
+  </div>
+  <div class="questions">
+    <div class="ref-box"><strong>Syllabus range:</strong> Exercises 1–28, 37–42</div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q1</span><span class="diff easy">Easy</span></div>
+    <div class="q-text">Find <span class="math">r'(t)</span> for <span class="math">r(t) = ⟨t³, sin 2t, e^(−t)⟩</span>. Then find the unit tangent vector <span class="math">T(0)</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q2</span><span class="diff med">Medium</span></div>
+    <div class="q-text">Evaluate <span class="math">∫₀¹ ⟨te^t,&nbsp; t/√(1−t²),&nbsp; t²⟩ dt</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q3</span><span class="diff med">Medium</span></div>
+    <div class="q-text">A particle has velocity <span class="math">v(t) = ⟨2t, e^t, cos t⟩</span> and initial position <span class="math">r(0) = ⟨1, 0, −1⟩</span>. Find <span class="math">r(t)</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q4</span><span class="diff hard">Hard</span></div>
+    <div class="q-text">Prove: if <span class="math">|r(t)| = c</span> (constant), then <span class="math">r(t) · r'(t) = 0</span> for all <span class="math">t</span>. Interpret this geometrically.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q5</span><span class="diff hard">Hard</span></div>
+    <div class="q-text">For <span class="math">r(t) = ⟨t, t², t³⟩</span>, compute <span class="math">d/dt[r(t) × r'(t)]</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q6</span><span class="diff hard">Hard</span></div>
+    <div class="q-text">Find the arc length of <span class="math">r(t) = ⟨√2 t, e^t, e^(−t)⟩</span> for <span class="math">0 ≤ t ≤ 1</span>.</div></div>
+  </div>
+</div>
+
+<!-- §14.1 -->
+<div class="chapter" id="s141">
+  <div class="chapter-header">
+    <span class="ch-num">§ 14.1</span>
+    <span class="ch-title">Functions of Several Variables</span>
+    <span class="clo-tag">CLO 2 · 20%</span>
+  </div>
+  <div class="questions">
+    <div class="ref-box"><strong>Syllabus range:</strong> Exercises 1–36</div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q1</span><span class="diff easy">Easy</span></div>
+    <div class="q-text">Find and sketch the domain of <span class="math">f(x,y) = √(x + y) / (x − y)</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q2</span><span class="diff easy">Easy</span></div>
+    <div class="q-text">Sketch the level curves of <span class="math">f(x,y) = x² − 2xy + y²</span> for <span class="math">k = 0, 1, 4, 9</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q3</span><span class="diff easy">Easy</span></div>
+    <div class="q-text">Describe the level surfaces of (a) <span class="math">f(x,y,z) = x² + y² + z²</span> and (b) <span class="math">g(x,y,z) = x + 2y − 3z</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q4</span><span class="diff med">Medium</span></div>
+    <div class="q-text">For <span class="math">f(x,y) = e^(x−y)</span>: (a) find the range, (b) sketch and label the level curves <span class="math">f = 1</span> and <span class="math">f = e</span>.</div></div>
+  </div>
+</div>
+
+<!-- §14.2 -->
+<div class="chapter" id="s142">
+  <div class="chapter-header">
+    <span class="ch-num">§ 14.2</span>
+    <span class="ch-title">Limits and Continuity</span>
+    <span class="clo-tag">CLO 2 · 20%</span>
+  </div>
+  <div class="questions">
+    <div class="ref-box"><strong>Syllabus range:</strong> Exercises 1–30, 41–50</div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q1</span><span class="diff easy">Easy</span></div>
+    <div class="q-text">Evaluate <span class="math">lim₍ₓ,ᵧ₎→₍₁,₂₎ (x²y + 3y²)/(x + y)</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q2</span><span class="diff med">Medium</span></div>
+    <div class="q-text">Show that <span class="math">lim₍ₓ,ᵧ₎→₍₀,₀₎ xy/(x² + y²)</span> does not exist by checking two different paths.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q3</span><span class="diff med">Medium</span></div>
+    <div class="q-text">Evaluate <span class="math">lim₍ₓ,ᵧ₎→₍₀,₀₎ sin(x² + y²)/(x² + y²)</span>. Justify your method.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q4</span><span class="diff med">Medium</span></div>
+    <div class="q-text">Show <span class="math">lim₍ₓ,ᵧ₎→₍₀,₀₎ (x² − y²)/(x² + y²)</span> does not exist by approaching along <span class="math">y = 0</span>, <span class="math">x = 0</span>, and <span class="math">y = x</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q5</span><span class="diff hard">Hard</span></div>
+    <div class="q-text">Does <span class="math">f(x,y) = x²y/(x⁴ + y²)</span> have a limit at the origin? Approach along <span class="math">y = x²</span> and <span class="math">y = 2x²</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q6</span><span class="diff hard">Hard</span></div>
+    <div class="q-text">Define <span class="math">f(0,0) = 0</span>. Is <span class="math">f(x,y) = (x³ + y³)/(x² + y²)</span> continuous at the origin? Prove your answer.</div></div>
+  </div>
+</div>
+
+<!-- §14.3 -->
+<div class="chapter" id="s143">
+  <div class="chapter-header">
+    <span class="ch-num">§ 14.3</span>
+    <span class="ch-title">Partial Derivatives</span>
+    <span class="clo-tag">CLO 1</span>
+  </div>
+  <div class="questions">
+    <div class="ref-box"><strong>Syllabus range:</strong> Exercise 2, 9–64</div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q1</span><span class="diff easy">Easy</span></div>
+    <div class="q-text">Find all first-order partial derivatives of <span class="math">f(x,y) = x³y² − 2x²y + xy³</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q2</span><span class="diff med">Medium</span></div>
+    <div class="q-text">Find <span class="math">f_x, f_y, f_z</span> for <span class="math">f(x,y,z) = x² sin(yz) + ze^(xy)</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q3</span><span class="diff med">Medium</span></div>
+    <div class="q-text">Find all second-order partial derivatives of <span class="math">f(x,y) = x³ + x²y³ − 2y²</span> and verify Clairaut's theorem.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q4</span><span class="diff med">Medium</span></div>
+    <div class="q-text">Show that <span class="math">f(x,y) = ln√(x² + y²)</span> satisfies Laplace's equation <span class="math">f_{xx} + f_{yy} = 0</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q5</span><span class="diff hard">Hard</span></div>
+    <div class="q-text">Show that <span class="math">u = e^(−αk²t) sin(kx)</span> satisfies the heat equation <span class="math">∂u/∂t = α ∂²u/∂x²</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q6</span><span class="diff hard">Hard</span></div>
+    <div class="q-text">Find <span class="math">∂z/∂x</span> and <span class="math">∂z/∂y</span> implicitly given <span class="math">x² + y² + z² = 3xyz</span>.</div></div>
+  </div>
+</div>
+
+<!-- §14.4 -->
+<div class="chapter" id="s144">
+  <div class="chapter-header">
+    <span class="ch-num">§ 14.4</span>
+    <span class="ch-title">Tangent Planes and Linear Approximation</span>
+    <span class="clo-tag">CLO 1</span>
+  </div>
+  <div class="questions">
+    <div class="ref-box"><strong>Syllabus range:</strong> Exercises 3–10, 15–22, 31–38</div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q1</span><span class="diff easy">Easy</span></div>
+    <div class="q-text">Find the equation of the tangent plane to <span class="math">z = x² + y²</span> at <span class="math">(1, 2, 5)</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q2</span><span class="diff med">Medium</span></div>
+    <div class="q-text">Find the tangent plane to <span class="math">z = e^x cos y</span> at <span class="math">(0, 0, 1)</span>. Use it to approximate <span class="math">f(0.1, 0.05)</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q3</span><span class="diff med">Medium</span></div>
+    <div class="q-text">Find the linearization <span class="math">L(x,y)</span> of <span class="math">f(x,y) = √(20 − x² − 7y²)</span> at <span class="math">(2,1)</span>. Approximate <span class="math">f(1.95, 1.02)</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q4</span><span class="diff hard">Hard</span></div>
+    <div class="q-text">Use differentials to estimate the maximum percentage error in <span class="math">V = πr²h</span> if <span class="math">r</span> and <span class="math">h</span> each carry at most 1% error.</div></div>
+  </div>
+</div>
+
+<!-- §14.5 -->
+<div class="chapter" id="s145">
+  <div class="chapter-header">
+    <span class="ch-num">§ 14.5</span>
+    <span class="ch-title">The Chain Rule</span>
+    <span class="clo-tag">CLO 1 · 4</span>
+  </div>
+  <div class="questions">
+    <div class="ref-box"><strong>Syllabus range:</strong> Exercises 1–37</div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q1</span><span class="diff easy">Easy</span></div>
+    <div class="q-text">If <span class="math">z = x²y + 3xy⁴</span>, <span class="math">x = sin 2t</span>, <span class="math">y = cos t</span>, find <span class="math">dz/dt</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q2</span><span class="diff med">Medium</span></div>
+    <div class="q-text">If <span class="math">z = e^(x+2y)</span>, <span class="math">x = s/t</span>, <span class="math">y = t/s</span>, find <span class="math">∂z/∂s</span> and <span class="math">∂z/∂t</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q3</span><span class="diff hard">Hard</span></div>
+    <div class="q-text">Derive the implicit differentiation formula <span class="math">dy/dx = −F_x/F_y</span> from the chain rule. Apply it to find <span class="math">dy/dx</span> for <span class="math">x³ + y³ = 6xy</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q4</span><span class="diff hard">Hard</span></div>
+    <div class="q-text">For an ideal gas <span class="math">PV = nRT</span>, show that <span class="math">(∂P/∂T)(∂T/∂V)(∂V/∂P) = −1</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q5</span><span class="diff hard">Hard</span></div>
+    <div class="q-text">If <span class="math">z = f(x − y, y − x)</span>, show that <span class="math">∂z/∂x + ∂z/∂y = 0</span>.</div></div>
+  </div>
+</div>
+
+<!-- §14.6 -->
+<div class="chapter" id="s146">
+  <div class="chapter-header">
+    <span class="ch-num">§ 14.6</span>
+    <span class="ch-title">Directional Derivatives and Gradient Vector</span>
+    <span class="clo-tag">CLO 1 · 4</span>
+  </div>
+  <div class="questions">
+    <div class="ref-box"><strong>Syllabus range:</strong> Exercises 1–52</div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q1</span><span class="diff easy">Easy</span></div>
+    <div class="q-text">Find the directional derivative of <span class="math">f(x,y) = x²y³ − 4y</span> at <span class="math">(2, −1)</span> in the direction of <span class="math">v = ⟨2, 5⟩</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q2</span><span class="diff easy">Easy</span></div>
+    <div class="q-text">Find the gradient of <span class="math">f(x,y,z) = x² + y² + z²</span> at <span class="math">(1,1,1)</span>. In what direction does <span class="math">f</span> increase most rapidly, and what is the maximum rate?</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q3</span><span class="diff med">Medium</span></div>
+    <div class="q-text">Find the directional derivative of <span class="math">f(x,y,z) = xe^y + ye^z + ze^x</span> at <span class="math">(0,0,0)</span> toward the point <span class="math">(1,2,3)</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q4</span><span class="diff med">Medium</span></div>
+    <div class="q-text">The temperature is <span class="math">T(x,y,z) = 200e^(−x²−3y²−9z²)</span>. A bug is at <span class="math">(1,1,−1)</span>. In which direction should it move to cool down most quickly?</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q5</span><span class="diff med">Medium</span></div>
+    <div class="q-text">Find the maximum directional derivative of <span class="math">f(x,y) = sin(xy)</span> at <span class="math">(1,0)</span> and the direction in which it occurs.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q6</span><span class="diff hard">Hard</span></div>
+    <div class="q-text">Show that <span class="math">∇f</span> at any point on the surface <span class="math">f(x,y,z) = c</span> is perpendicular to the level surface at that point.</div></div>
+  </div>
+</div>
+
+<!-- §14.7 -->
+<div class="chapter" id="s147">
+  <div class="chapter-header">
+    <span class="ch-num">§ 14.7</span>
+    <span class="ch-title">Maximum and Minimum Values</span>
+    <span class="clo-tag">CLO 3 · 4 · 70%</span>
+  </div>
+  <div class="questions">
+    <div class="ref-box"><strong>Syllabus range:</strong> Exercises 5–22</div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q1</span><span class="diff med">Medium</span></div>
+    <div class="q-text">Find and classify all critical points of <span class="math">f(x,y) = x³ − 12xy + 8y³</span> using the second derivative test (D-test).</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q2</span><span class="diff med">Medium</span></div>
+    <div class="q-text">Classify the critical points of <span class="math">f(x,y) = 4 + x³ + y³ − 3xy</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q3</span><span class="diff med">Medium</span></div>
+    <div class="q-text">Find the point on the plane <span class="math">2x + y − z = 5</span> closest to the origin by minimizing distance squared.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q4</span><span class="diff hard">Hard</span></div>
+    <div class="q-text">Find the absolute maximum and minimum of <span class="math">f(x,y) = x² + xy + y² − 6x</span> on the closed triangle with vertices <span class="math">(0,0), (6,0), (0,6)</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q5</span><span class="diff hard">Hard</span></div>
+    <div class="q-text">A rectangular box with no lid is made from <span class="math">12 m²</span> of cardboard. Find dimensions that maximize volume.</div></div>
+  </div>
+</div>
+
+<!-- §14.8 -->
+<div class="chapter" id="s148">
+  <div class="chapter-header">
+    <span class="ch-num">§ 14.8</span>
+    <span class="ch-title">Lagrange Multipliers</span>
+    <span class="clo-tag">CLO 3 · 4 · 70%</span>
+  </div>
+  <div class="questions">
+    <div class="ref-box"><strong>Syllabus range:</strong> Exercises 3–16</div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q1</span><span class="diff med">Medium</span></div>
+    <div class="q-text">Use Lagrange multipliers to find the extrema of <span class="math">f(x,y) = x² + y²</span> subject to <span class="math">x⁴ + y⁴ = 1</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q2</span><span class="diff med">Medium</span></div>
+    <div class="q-text">Find the minimum distance from the origin to the plane <span class="math">x + 2y − 2z = 5</span> using Lagrange multipliers.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q3</span><span class="diff hard">Hard</span></div>
+    <div class="q-text">Maximize <span class="math">f(x,y,z) = xyz</span> subject to <span class="math">x + y + z = 12,&nbsp; x,y,z > 0</span>. Interpret the result in terms of the AM-GM inequality.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q4</span><span class="diff hard">Hard</span></div>
+    <div class="q-text">A firm uses capital <span class="math">K</span> and labor <span class="math">L</span> with production <span class="math">P = K^(0.6)L^(0.4)</span>, budget <span class="math">3K + 2L = 120</span>. Find the optimal <span class="math">(K, L)</span> via Lagrange multipliers.</div></div>
+  </div>
+</div>
+
+<!-- §15.1 -->
+<div class="chapter" id="s151">
+  <div class="chapter-header">
+    <span class="ch-num">§ 15.1</span>
+    <span class="ch-title">Double Integrals over Rectangles</span>
+    <span class="clo-tag">CLO 3 · 4 · 70%</span>
+  </div>
+  <div class="questions">
+    <div class="ref-box"><strong>Syllabus range:</strong> Ex 7 — Q 19, 22, 29, 34, 44</div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q1</span><span class="diff easy">Easy</span></div>
+    <div class="q-text">Evaluate <span class="math">∬_R (x − 3y²) dA</span> where <span class="math">R = [0,2] × [1,2]</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q2</span><span class="diff easy">Easy</span></div>
+    <div class="q-text">Evaluate <span class="math">∫₀¹ ∫₀² (x + 2y) dx dy</span> and verify by reversing the order of integration.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q3</span><span class="diff hard">Hard</span></div>
+    <div class="q-text">Evaluate <span class="math">∬_R xe^(xy) dA</span> where <span class="math">R = [0,2] × [0,3]</span>. Choose the better order of integration and justify your choice.</div></div>
+  </div>
+</div>
+
+<!-- §15.2 -->
+<div class="chapter" id="s152">
+  <div class="chapter-header">
+    <span class="ch-num">§ 15.2</span>
+    <span class="ch-title">Double Integrals over General Regions</span>
+    <span class="clo-tag">CLO 3 · 4 · 70%</span>
+  </div>
+  <div class="questions">
+    <div class="ref-box"><strong>Syllabus range:</strong> Ex 2 — Q 3, 9, 18, 27</div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q1</span><span class="diff easy">Easy</span></div>
+    <div class="q-text">Evaluate <span class="math">∫₀¹ ∫_x^√x xy\, dy\, dx</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q2</span><span class="diff med">Medium</span></div>
+    <div class="q-text">Evaluate <span class="math">∬_D (2x − y) dA</span> where <span class="math">D</span> is bounded by <span class="math">y = x²</span> and <span class="math">y = x + 2</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q3</span><span class="diff hard">Hard</span></div>
+    <div class="q-text">Reverse the order of integration and evaluate <span class="math">∫₀¹ ∫_y^1 e^(x²) dx\, dy</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q4</span><span class="diff hard">Hard</span></div>
+    <div class="q-text">Find the volume under <span class="math">z = x + y</span> over the disk <span class="math">x² + y² ≤ 4</span> (convert to polar).</div></div>
+  </div>
+</div>
+
+<!-- §15.6 -->
+<div class="chapter" id="s156">
+  <div class="chapter-header">
+    <span class="ch-num">§ 15.6</span>
+    <span class="ch-title">Triple Integrals</span>
+    <span class="clo-tag">CLO 3 · 4 · 70%</span>
+  </div>
+  <div class="questions">
+    <div class="ref-box"><strong>Syllabus range:</strong> Ex 3, 6 — Q 3, 7, 15, 19</div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q1</span><span class="diff med">Medium</span></div>
+    <div class="q-text">Evaluate <span class="math">∭_E 6xy\, dV</span> where <span class="math">E</span> is bounded by <span class="math">x=0, x=1, y=0, y=x, z=0, z=x+y</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q2</span><span class="diff med">Medium</span></div>
+    <div class="q-text">Find the volume of the solid bounded above by the paraboloid <span class="math">z = x² + y²</span> and below by the plane <span class="math">z = 4</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q3</span><span class="diff hard">Hard</span></div>
+    <div class="q-text">Evaluate <span class="math">∭_E (x² + y²) dV</span> where <span class="math">E</span> is the tetrahedron with vertices <span class="math">(0,0,0), (1,0,0), (0,1,0), (0,0,1)</span>.</div></div>
+  </div>
+</div>
+
+<!-- §16.2 — NOTE: Q35, Q38 excluded per syllabus -->
+<div class="chapter" id="s162">
+  <div class="chapter-header">
+    <span class="ch-num">§ 16.2</span>
+    <span class="ch-title">Line Integrals</span>
+    <span class="clo-tag">CLO 3 · 4 · 70%</span>
+  </div>
+  <div class="questions">
+    <div class="ref-box"><strong>Syllabus range:</strong> Q 1, 3, 5, 7, 11, 15, 21, 23, 27 &nbsp;·&nbsp; <em>Q35 and Q38 excluded</em></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q1</span><span class="diff easy">Easy</span></div>
+    <div class="q-text">Evaluate <span class="math">∫_C (x + y)\, ds</span> where <span class="math">C</span> is the line segment from <span class="math">(0,0)</span> to <span class="math">(1,2)</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q2</span><span class="diff med">Medium</span></div>
+    <div class="q-text">Evaluate <span class="math">∫_C xy\, ds</span> where <span class="math">C</span> is the upper semicircle <span class="math">x² + y² = 4</span> from <span class="math">(2,0)</span> to <span class="math">(−2,0)</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q3</span><span class="diff med">Medium</span></div>
+    <div class="q-text">Evaluate <span class="math">∫_C F · dr</span> where <span class="math">F = ⟨xy, y²⟩</span> and <span class="math">C</span> is <span class="math">x=t, y=t²</span> for <span class="math">0 ≤ t ≤ 1</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q4</span><span class="diff med">Medium</span></div>
+    <div class="q-text">Find the work done by <span class="math">F(x,y,z) = ⟨x, y, z⟩</span> along the helix <span class="math">r(t) = ⟨cos t, sin t, t⟩</span>, <span class="math">0 ≤ t ≤ 2π</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q5</span><span class="diff hard">Hard</span></div>
+    <div class="q-text">Evaluate <span class="math">∫_C (x+y) dx + (x−y) dy</span> along (a) the line segment from <span class="math">(0,0)</span> to <span class="math">(2,4)</span>, and (b) the parabola <span class="math">y = x²</span> from <span class="math">(0,0)</span> to <span class="math">(2,4)</span>. Are they equal? What does this imply?</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q6</span><span class="diff hard">Hard</span></div>
+    <div class="q-text">A wire has the shape of the quarter-circle <span class="math">x² + y² = 4,&nbsp; x ≥ 0,&nbsp; y ≥ 0</span> with density <span class="math">ρ(x,y) = x + y</span>. Find its mass.</div></div>
+  </div>
+</div>
+
+<!-- §16.4 -->
+<div class="chapter" id="s164">
+  <div class="chapter-header">
+    <span class="ch-num">§ 16.4</span>
+    <span class="ch-title">Green's Theorem</span>
+    <span class="clo-tag">CLO 3 · 4 · 70%</span>
+  </div>
+  <div class="questions">
+    <div class="ref-box"><strong>Syllabus range:</strong> Exercises 5–14</div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q1</span><span class="diff easy">Easy</span></div>
+    <div class="q-text">Use Green's theorem to evaluate <span class="math">∮_C y² dx + x² dy</span> where <span class="math">C</span> is the rectangle <span class="math">[0,2] × [0,3]</span>, counterclockwise.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q2</span><span class="diff med">Medium</span></div>
+    <div class="q-text">Use the area formula from Green's theorem to find the area of the ellipse <span class="math">x²/a² + y²/b² = 1</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q3</span><span class="diff hard">Hard</span></div>
+    <div class="q-text">Verify Green's theorem for <span class="math">F = ⟨xy, x²⟩</span> on the region bounded by <span class="math">y = x</span> and <span class="math">y = x²</span> by computing both sides independently.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q4</span><span class="diff hard">Hard</span></div>
+    <div class="q-text">Evaluate <span class="math">∮_C e^x sin y\, dx + e^x cos y\, dy</span> where <span class="math">C</span> is the boundary of <span class="math">[0,π] × [0,1]</span>.</div></div>
+  </div>
+</div>
+
+<!-- §16.5 — NOTE: Q15, Q17 excluded per syllabus -->
+<div class="chapter" id="s165">
+  <div class="chapter-header">
+    <span class="ch-num">§ 16.5</span>
+    <span class="ch-title">Curl and Divergence</span>
+    <span class="clo-tag">CLO 3 · 4 · 70%</span>
+  </div>
+  <div class="questions">
+    <div class="ref-box"><strong>Syllabus range:</strong> Ex 1–4 — Q 1, 3, 5, 7, 26, 28 &nbsp;·&nbsp; <em>Q15 and Q17 excluded</em></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q1</span><span class="diff easy">Easy</span></div>
+    <div class="q-text">Find the curl and divergence of <span class="math">F(x,y,z) = ⟨xyz, y²z, xz²⟩</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q2</span><span class="diff easy">Easy</span></div>
+    <div class="q-text">Compute <span class="math">curl(∇f)</span> where <span class="math">f(x,y,z) = x² + 2y² + 3z²</span>. Interpret the result.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q3</span><span class="diff med">Medium</span></div>
+    <div class="q-text">Show that <span class="math">div(curl F) = 0</span> for any vector field <span class="math">F</span> with continuous second-order partials.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q4</span><span class="diff hard">Hard</span></div>
+    <div class="q-text">Show that <span class="math">F = ⟨y² + z², 2xy, 2xz⟩</span> is conservative. Find a potential function <span class="math">f</span> such that <span class="math">∇f = F</span>, then evaluate <span class="math">∫_C F · dr</span> from <span class="math">(1,0,0)</span> to <span class="math">(0,1,1)</span>.</div></div>
+
+    <div class="q"><div class="q-meta"><span class="q-num">Q5</span><span class="diff hard">Hard</span></div>
+    <div class="q-text">Determine whether <span class="math">F = ⟨e^x cos yz,&nbsp; −ze^x sin yz,&nbsp; −ye^x sin yz⟩</span> is conservative. If yes, find its potential function.</div></div>
+  </div>
+</div>
+
+</main>
+<footer>NUCES Karachi &nbsp;·&nbsp; MVC Final Exam Preparation &nbsp;·&nbsp; Stewart Multivariable Calculus 9e &nbsp;·&nbsp; Q35 &amp; Q38 of §16.2 and Q15 &amp; Q17 of §16.5 are excluded per syllabus</footer>
+</body>
+</html>
